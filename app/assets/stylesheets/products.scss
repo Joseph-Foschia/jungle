@@ -30,6 +30,13 @@ main section.categories-show {
         border-radius: 0.25rem;
       }
 
+      .fade-out {
+        pointer-events: none;
+        opacity: 0.5;
+        cursor: not-allowed;
+        height: 38px;
+      }
+
       a {
         text-decoration: none;
       }
