@@ -3,9 +3,30 @@
   <header class="page-header">
     <h1>Order #<%= @order.id %></h1>
   </header>
-
+  <% total_order_price = 0 %>
   <div class="order-summary jumbotron">
     <h4>Thank you for your order!</h4>
+    <div>
+    <% LineItem.where(order_id: @order.id).each do |line_item| %>
+      <% product = Product.find_by(id: line_item.product_id) %>
+      <% if product %>
+        <p>Product Name: <%= product.name %></p>
+        <p>Product Image: <%= image_tag product.image.url, class: 'main-img' %>
+        <p>Quantity: <%= line_item.quantity %></p>
+        <p>Product Description: <%= product.description %></p>
+        <p>Total Price: <%= line_item.total_price_cents / 100.0 %></p>
+        <% total_order_price += line_item.total_price_cents %>
+        <hr>
+      <% else %>
+        <p>Product not found</p>
+      <% end %>
+      <hr>
+    <% end %>
+    <p>Email Used: $<%= @order.email %> </p>
+    <p>Total: $<%= (total_order_price / 100.0) %> </p>
+  </div>
+    <div>
+    <%= button_to product_url %>
   </div>
 
   <%= link_to "Continue Shopping", root_path, class: 'btn btn-lg btn-primary' %>
